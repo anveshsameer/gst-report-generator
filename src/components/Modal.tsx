@@ -16,16 +16,16 @@ export function Modal({ open, title, onClose, children }: ModalProps) {
       onClick={onClose}
     >
       <div
-        className="w-full max-w-sm rounded-xl bg-white p-5 shadow-xl dark:bg-slate-900"
+        className="w-full max-w-sm rounded-xl bg-white p-5 shadow-xl dark:bg-stone-900"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-3 flex items-center justify-between">
-          <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">{title}</h3>
+          <h3 className="text-base font-semibold text-stone-900 dark:text-stone-100">{title}</h3>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="rounded-md px-2 py-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300"
+            className="rounded-md px-2 py-1 text-stone-400 hover:bg-stone-100 hover:text-stone-600 dark:hover:bg-stone-800 dark:hover:text-stone-300"
           >
             ✕
           </button>

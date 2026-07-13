@@ -3,6 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/db'
 import { Field } from '../components/Field'
 import { useToastStore } from '../store/useToastStore'
+import { CheckIcon, SettingsIcon } from '../components/icons'
 
 export function Settings() {
   const settings = useLiveQuery(() => db.settings.toCollection().first())
@@ -30,10 +31,13 @@ export function Settings() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-base font-semibold">Settings</h2>
+      <h2 className="flex items-center gap-2 text-base font-semibold text-rose-900 dark:text-amber-400">
+        <SettingsIcon className="h-5 w-5" />
+        Settings
+      </h2>
       <form
         onSubmit={handleSubmit}
-        className="space-y-3 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900"
+        className="space-y-3 rounded-xl border border-stone-200 bg-white p-4 dark:border-stone-800 dark:bg-stone-900"
       >
         <Field
           label="Business name"
@@ -59,8 +63,9 @@ export function Settings() {
         />
         <button
           type="submit"
-          className="w-full rounded-md bg-emerald-600 px-3 py-2 text-sm font-medium text-white hover:bg-emerald-700"
+          className="flex w-full items-center justify-center gap-1.5 rounded-md bg-amber-600 px-3 py-2 text-sm font-medium text-white hover:bg-amber-700"
         >
+          <CheckIcon className="h-4 w-4" />
           Save settings
         </button>
       </form>

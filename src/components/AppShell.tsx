@@ -1,69 +1,6 @@
-import type { SVGProps } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { ToastHost } from './ToastHost'
-
-function Icon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    />
-  )
-}
-
-function HomeIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <Icon {...props}>
-      <path d="M4 11 12 4l8 7" />
-      <path d="M6 10v9a1 1 0 0 0 1 1h4v-6h2v6h4a1 1 0 0 0 1-1v-9" />
-    </Icon>
-  )
-}
-
-function ItemsIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <Icon {...props}>
-      <path d="M12 3 4 7v10l8 4 8-4V7l-8-4Z" />
-      <path d="M4 7l8 4 8-4" />
-      <path d="M12 11v10" />
-    </Icon>
-  )
-}
-
-function GenerateIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <Icon {...props}>
-      <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" />
-    </Icon>
-  )
-}
-
-function HistoryIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <Icon {...props}>
-      <circle cx="12" cy="12" r="8" />
-      <path d="M12 8v4l3 2" />
-    </Icon>
-  )
-}
-
-function SettingsIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <Icon {...props}>
-      <line x1="4" y1="6" x2="20" y2="6" />
-      <circle cx="9" cy="6" r="2" fill="currentColor" stroke="none" />
-      <line x1="4" y1="12" x2="20" y2="12" />
-      <circle cx="15" cy="12" r="2" fill="currentColor" stroke="none" />
-      <line x1="4" y1="18" x2="20" y2="18" />
-      <circle cx="7" cy="18" r="2" fill="currentColor" stroke="none" />
-    </Icon>
-  )
-}
+import { GenerateIcon, HistoryIcon, HomeIcon, ItemsIcon, SettingsIcon } from './icons'
 
 const NAV_ITEMS = [
   { to: '/', label: 'Home', end: true, Icon: HomeIcon },
@@ -75,11 +12,11 @@ const NAV_ITEMS = [
 
 export function AppShell() {
   return (
-    <div className="mx-auto flex min-h-screen max-w-2xl flex-col bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <div className="mx-auto flex min-h-screen max-w-2xl flex-col bg-gradient-to-b from-amber-50 via-stone-50 to-stone-50 text-stone-900 dark:from-stone-950 dark:via-stone-950 dark:to-stone-950 dark:text-stone-100">
       <ToastHost />
 
-      <header className="border-b border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
-        <h1 className="text-lg font-semibold">GST Report Generator</h1>
+      <header className="border-b border-stone-200 bg-white/80 px-4 py-3 backdrop-blur dark:border-stone-800 dark:bg-stone-900/80">
+        <h1 className="text-lg font-semibold text-rose-900 dark:text-amber-400">GST Report Generator</h1>
       </header>
 
       <main
@@ -90,7 +27,7 @@ export function AppShell() {
       </main>
 
       <nav
-        className="no-print fixed inset-x-0 bottom-0 mx-auto flex max-w-2xl border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900"
+        className="no-print fixed inset-x-0 bottom-0 mx-auto flex max-w-2xl border-t border-stone-200 bg-white dark:border-stone-800 dark:bg-stone-900"
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
         {NAV_ITEMS.map(({ to, label, end, Icon: NavIcon }) => (
@@ -100,7 +37,7 @@ export function AppShell() {
             end={end}
             className={({ isActive }) =>
               `flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] font-medium ${
-                isActive ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 dark:text-slate-400'
+                isActive ? 'text-amber-700 dark:text-amber-400' : 'text-stone-500 dark:text-stone-400'
               }`
             }
           >
@@ -108,7 +45,7 @@ export function AppShell() {
               <>
                 <span
                   className={`flex h-8 w-12 items-center justify-center rounded-full transition-colors ${
-                    isActive ? 'bg-emerald-100 dark:bg-emerald-500/15' : ''
+                    isActive ? 'bg-amber-100 dark:bg-amber-500/15' : ''
                   }`}
                 >
                   <NavIcon className="h-5 w-5" />

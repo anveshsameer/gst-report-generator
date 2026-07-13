@@ -7,6 +7,7 @@ import { exportDetailedPdf, exportOverviewPdf } from '../utils/pdfExport'
 import { formatINR } from '../utils/currency'
 import { formatDisplayDate, MONTH_NAMES } from '../utils/dateUtils'
 import { useToastStore } from '../store/useToastStore'
+import { DownloadIcon, ReceiptIcon } from '../components/icons'
 
 export function Reports() {
   const { reportId } = useParams()
@@ -20,12 +21,16 @@ export function Reports() {
 
   const overview = useMemo(() => (bills ? buildOverviewReport(bills) : null), [bills])
   const detailed = useMemo(() => (bills ? buildDetailedReport(bills) : null), [bills])
+  const festivalDateSet = useMemo(
+    () => new Set((report?.festivalDays ?? []).map((f) => f.date)),
+    [report],
+  )
 
   if (!Number.isFinite(id)) {
     return (
       <div className="space-y-3">
-        <p className="text-sm text-slate-500">Report not found.</p>
-        <Link to="/history" className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
+        <p className="text-sm text-stone-500">Report not found.</p>
+        <Link to="/history" className="text-sm font-medium text-amber-700 dark:text-amber-400">
           ← Back to history
         </Link>
       </div>
@@ -33,7 +38,7 @@ export function Reports() {
   }
 
   if (report === undefined || bills === undefined) {
-    return <p className="text-sm text-slate-500">Loading…</p>
+    return <p className="text-sm text-stone-500">Loading…</p>
   }
 
   function handleExport() {
@@ -49,10 +54,11 @@ export function Reports() {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-base font-semibold">
+        <h2 className="flex items-center gap-2 text-base font-semibold text-rose-900 dark:text-amber-400">
+          <ReceiptIcon className="h-5 w-5" />
           {MONTH_NAMES[report.month - 1]} {report.year}
         </h2>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
+        <p className="text-sm text-stone-500 dark:text-stone-400">
           Bills {report.startingBillNumber}–{report.endingBillNumber} · Grand total{' '}
           {formatINR(report.actualGrandTotal)}
         </p>
@@ -64,8 +70,8 @@ export function Reports() {
           onClick={() => setTab('overview')}
           className={`rounded-md px-3 py-1.5 text-sm font-medium ${
             tab === 'overview'
-              ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
-              : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'
+              ? 'bg-rose-900 text-white dark:bg-amber-500 dark:text-stone-950'
+              : 'bg-stone-100 text-stone-600 dark:bg-stone-800 dark:text-stone-300'
           }`}
         >
           Overview
@@ -75,8 +81,8 @@ export function Reports() {
           onClick={() => setTab('detailed')}
           className={`rounded-md px-3 py-1.5 text-sm font-medium ${
             tab === 'detailed'
-              ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
-              : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'
+              ? 'bg-rose-900 text-white dark:bg-amber-500 dark:text-stone-950'
+              : 'bg-stone-100 text-stone-600 dark:bg-stone-800 dark:text-stone-300'
           }`}
         >
           Detailed
@@ -84,16 +90,17 @@ export function Reports() {
         <button
           type="button"
           onClick={handleExport}
-          className="ml-auto rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+          className="ml-auto flex items-center gap-1.5 rounded-md bg-amber-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-700"
         >
+          <DownloadIcon className="h-4 w-4" />
           Export PDF
         </button>
       </div>
 
       {tab === 'overview' && overview && (
-        <div className="overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-700">
+        <div className="overflow-x-auto rounded-lg border border-stone-200 dark:border-stone-700">
           <table className="w-full min-w-max text-sm">
-            <thead className="bg-slate-100 dark:bg-slate-800">
+            <thead className="bg-stone-100 dark:bg-stone-800">
               <tr>
                 <th className="px-3 py-2 text-left">Date</th>
                 <th className="px-3 py-2 text-left">Bill number</th>
@@ -102,10 +109,17 @@ export function Reports() {
                 <th className="px-3 py-2 text-right">SGST</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+            <tbody className="divide-y divide-stone-200 dark:divide-stone-700">
               {overview.rows.map((r) => (
                 <tr key={r.date}>
-                  <td className="px-3 py-2">{formatDisplayDate(r.date)}</td>
+                  <td className="px-3 py-2">
+                    {formatDisplayDate(r.date)}
+                    {festivalDateSet.has(r.date) && (
+                      <span className="ml-1.5 rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-700 dark:bg-amber-500/15 dark:text-amber-400">
+                        Festival
+                      </span>
+                    )}
+                  </td>
                   <td className="px-3 py-2">
                     {r.billFrom} to {r.billTo}
                   </td>
@@ -116,7 +130,7 @@ export function Reports() {
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t border-slate-300 font-semibold dark:border-slate-600">
+              <tr className="border-t border-stone-300 font-semibold dark:border-stone-600">
                 <td className="px-3 py-2" colSpan={2}>
                   TOTAL
                 </td>
@@ -138,9 +152,9 @@ export function Reports() {
       )}
 
       {tab === 'detailed' && detailed && (
-        <div className="max-h-[70vh] overflow-auto rounded-lg border border-slate-200 dark:border-slate-700">
+        <div className="max-h-[70vh] overflow-auto rounded-lg border border-stone-200 dark:border-stone-700">
           <table className="w-full min-w-max text-xs">
-            <thead className="sticky top-0 bg-slate-100 dark:bg-slate-800">
+            <thead className="sticky top-0 bg-stone-100 dark:bg-stone-800">
               <tr>
                 <th className="px-2 py-1.5 text-left">Bill No</th>
                 <th className="px-2 py-1.5 text-left">Date</th>
@@ -154,7 +168,7 @@ export function Reports() {
                 <th className="px-2 py-1.5 text-right">Grand Total</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+            <tbody className="divide-y divide-stone-200 dark:divide-stone-700">
               {detailed.map((r) => (
                 <tr key={r.billNumber}>
                   <td className="px-2 py-1.5">{r.billNumber}</td>

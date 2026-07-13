@@ -3,11 +3,13 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import type { ColumnDef } from '@tanstack/react-table'
 import { db } from '../db/db'
 import { DataTable } from '../components/DataTable'
+import { EmptyState } from '../components/EmptyState'
 import { Field } from '../components/Field'
 import { Modal } from '../components/Modal'
 import { ConfirmDialog } from '../components/ConfirmDialog'
 import { useToastStore } from '../store/useToastStore'
 import { formatINR } from '../utils/currency'
+import { CheckIcon, ItemsIcon, PencilIcon, PlusIcon, TrashIcon } from '../components/icons'
 import type { Item } from '../types'
 
 const EMPTY_FORM = { code: '', name: '', pricePerKg: '' }
@@ -82,16 +84,18 @@ export function ItemMaster() {
           <button
             type="button"
             onClick={() => startEdit(row.original)}
-            className="text-sm font-medium text-emerald-600 dark:text-emerald-400"
+            aria-label="Edit"
+            className="text-amber-700 dark:text-amber-400"
           >
-            Edit
+            <PencilIcon className="h-4 w-4" />
           </button>
           <button
             type="button"
             onClick={() => setDeleteTarget(row.original)}
-            className="text-sm font-medium text-red-600 dark:text-red-400"
+            aria-label="Delete"
+            className="text-red-600 dark:text-red-400"
           >
-            Delete
+            <TrashIcon className="h-4 w-4" />
           </button>
         </div>
       ),
@@ -101,17 +105,29 @@ export function ItemMaster() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-base font-semibold">Item master</h2>
+        <h2 className="flex items-center gap-2 text-base font-semibold text-rose-900 dark:text-amber-400">
+          <ItemsIcon className="h-5 w-5" />
+          Item master
+        </h2>
         <button
           type="button"
           onClick={startAdd}
-          className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+          className="flex items-center gap-1.5 rounded-md bg-amber-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-700"
         >
+          <PlusIcon className="h-4 w-4" />
           Add item
         </button>
       </div>
 
-      <DataTable columns={columns} data={items} emptyMessage="No items yet — add your first item." />
+      {items.length === 0 ? (
+        <EmptyState
+          icon={ItemsIcon}
+          title="No items yet"
+          description="Add your first item to start building the item master."
+        />
+      ) : (
+        <DataTable columns={columns} data={items} />
+      )}
 
       <Modal open={formOpen} title={editingId != null ? 'Edit item' : 'Add item'} onClose={() => setFormOpen(false)}>
         <form onSubmit={handleSubmit} className="space-y-3">
@@ -121,7 +137,7 @@ export function ItemMaster() {
               value={form.code}
               readOnly
               tabIndex={-1}
-              className="cursor-not-allowed bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400"
+              className="cursor-not-allowed bg-stone-100 text-stone-500 dark:bg-stone-800 dark:text-stone-400"
               hint={editingId != null ? 'Locked' : 'Auto-assigned'}
             />
             <Field
@@ -143,14 +159,15 @@ export function ItemMaster() {
             <button
               type="button"
               onClick={() => setFormOpen(false)}
-              className="rounded-md px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-300"
+              className="rounded-md px-3 py-1.5 text-sm font-medium text-stone-600 dark:text-stone-300"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+              className="flex items-center gap-1.5 rounded-md bg-amber-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-700"
             >
+              <CheckIcon className="h-4 w-4" />
               Save
             </button>
           </div>

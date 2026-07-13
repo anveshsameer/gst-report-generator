@@ -3,7 +3,7 @@ import { useToastStore } from '../store/useToastStore'
 const VARIANT_CLASSES: Record<string, string> = {
   success: 'bg-emerald-600 text-white',
   error: 'bg-red-600 text-white',
-  info: 'bg-slate-800 text-white',
+  info: 'bg-stone-800 text-white',
 }
 
 export function ToastHost() {

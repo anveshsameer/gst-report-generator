@@ -16,19 +16,19 @@ export function DataTable<T>({ columns, data, emptyMessage = 'No data yet.', foo
   })
 
   if (data.length === 0) {
-    return <p className="rounded-lg border border-dashed border-slate-300 py-8 text-center text-sm text-slate-500 dark:border-slate-700">{emptyMessage}</p>
+    return <p className="rounded-lg border border-dashed border-stone-300 py-8 text-center text-sm text-stone-500 dark:border-stone-700">{emptyMessage}</p>
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-700">
+    <div className="overflow-x-auto rounded-lg border border-stone-200 dark:border-stone-700">
       <table className="w-full min-w-max text-sm">
-        <thead className="bg-slate-100 dark:bg-slate-800">
+        <thead className="bg-stone-100 dark:bg-stone-800">
           {table.getHeaderGroups().map((hg) => (
             <tr key={hg.id}>
               {hg.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="whitespace-nowrap px-3 py-2 text-left font-semibold text-slate-700 dark:text-slate-200"
+                  className="whitespace-nowrap px-2 py-2 text-left font-semibold text-stone-700 dark:text-stone-200"
                 >
                   {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                 </th>
@@ -36,11 +36,11 @@ export function DataTable<T>({ columns, data, emptyMessage = 'No data yet.', foo
             </tr>
           ))}
         </thead>
-        <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+        <tbody className="divide-y divide-stone-200 dark:divide-stone-700">
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+            <tr key={row.id} className="hover:bg-stone-50 dark:hover:bg-stone-800/50">
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="whitespace-nowrap px-3 py-2">
+                <td key={cell.id} className="whitespace-nowrap px-2 py-2">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}

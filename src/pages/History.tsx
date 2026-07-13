@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/db'
 import { ConfirmDialog } from '../components/ConfirmDialog'
+import { EmptyState } from '../components/EmptyState'
 import { useToastStore } from '../store/useToastStore'
 import { formatINR } from '../utils/currency'
 import { MONTH_NAMES } from '../utils/dateUtils'
+import { HistoryIcon, TrashIcon } from '../components/icons'
 import type { MonthlyReportRecord } from '../types'
 
 export function History() {
@@ -26,38 +28,45 @@ export function History() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-base font-semibold">Report history</h2>
+      <h2 className="flex items-center gap-2 text-base font-semibold text-rose-900 dark:text-amber-400">
+        <HistoryIcon className="h-5 w-5" />
+        Report history
+      </h2>
 
       {reports != null && reports.length === 0 && (
-        <p className="rounded-lg border border-dashed border-slate-300 py-8 text-center text-sm text-slate-500 dark:border-slate-700">
-          No reports generated yet.
-        </p>
+        <EmptyState
+          icon={HistoryIcon}
+          title="No reports generated yet"
+          description="Reports you generate and save will show up here."
+          action={{ label: 'Generate report', to: '/generate' }}
+        />
       )}
 
       <ul className="space-y-2">
         {reports?.map((r) => (
           <li
             key={r.id}
-            className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900"
+            className="flex items-center justify-between gap-3 rounded-xl border border-stone-200 bg-white p-4 dark:border-stone-800 dark:bg-stone-900"
           >
             <div>
               <p className="font-medium">
                 {MONTH_NAMES[r.month - 1]} {r.year}
               </p>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+              <p className="text-sm text-stone-500 dark:text-stone-400">
                 Bills {r.startingBillNumber}–{r.endingBillNumber} · {formatINR(r.actualGrandTotal)}
               </p>
             </div>
             <div className="flex shrink-0 items-center gap-3">
-              <Link to={`/reports/${r.id}`} className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
+              <Link to={`/reports/${r.id}`} className="text-sm font-medium text-amber-700 dark:text-amber-400">
                 View
               </Link>
               <button
                 type="button"
                 onClick={() => setDeleteTarget(r)}
-                className="text-sm font-medium text-red-600 dark:text-red-400"
+                aria-label="Delete"
+                className="text-red-600 dark:text-red-400"
               >
-                Delete
+                <TrashIcon className="h-4 w-4" />
               </button>
             </div>
           </li>

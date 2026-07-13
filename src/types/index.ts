@@ -20,16 +20,22 @@ export interface Bill {
   amountAfterTax: number
 }
 
+export interface FestivalDay {
+  date: string // ISO date, YYYY-MM-DD
+  label: string
+  targetAmount: number // after-tax sales target for this specific date
+}
+
 export interface MonthlyReportParams {
   month: number // 1-12
   year: number
   targetGrandTotal: number
   gstRatePercent: number
   startingBillNumber: number
-  workingDays: number
   billsPerDay: number
   minBillAmount: number
   maxBillAmount: number
+  festivalDays: FestivalDay[]
 }
 
 export interface MonthlyReportRecord extends MonthlyReportParams {
