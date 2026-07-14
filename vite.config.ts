@@ -5,7 +5,6 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/gst-report-generator/',
   server: {
     host: true,
   },
@@ -19,8 +18,8 @@ export default defineConfig({
         name: 'GST Report Generator',
         short_name: 'GST Reports',
         description: 'Generate monthly GST detailed and overview bill reports',
-        start_url: '/gst-report-generator/',
-        scope: '/gst-report-generator/',
+        start_url: '/',
+        scope: '/',
         display: 'standalone',
         background_color: '#0f172a',
         theme_color: '#0f172a',
